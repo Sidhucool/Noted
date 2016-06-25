@@ -1,0 +1,18 @@
+<html>
+<head>
+	<title>Notes-Login Page</title>
+</head>
+<body>
+<h1>User Login</h1>
+{%if form.errors %}
+<p>Your Username and password didn't match.Please try Again</p>
+{% endif %}
+<form method="post" action="{% url 'Notes:login' %}">
+{% csrf_token%}
+<p><label for="id_username">Username:</label>{{ form.username }}</p>	
+<p><label for="id_password">Password:</label>{{ form.password }}</p>
+<input type="hidden" name="next" value="/notes">
+<input type="submit" value="login" />
+</form>
+</body>
+</html>
