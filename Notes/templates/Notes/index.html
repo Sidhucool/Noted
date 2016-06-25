@@ -1,9 +1,6 @@
-{% if user.username %}
 <h1>Welcome :{{ user.username }}</h1>>
 <h3>Here all your Notes</h3>
 {% for note in all_notes%}
 <h4>{{ note }}</h4>
 {% endfor %}
-{% else %}
-<h1>Hi old</h1>
-{% endif %}
+
