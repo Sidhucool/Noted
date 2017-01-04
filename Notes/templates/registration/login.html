@@ -1,18 +1,25 @@
-<html>
-<head>
-	<title>Notes-Login Page</title>
-</head>
-<body>
-<h1>User Login</h1>
-{%if form.errors %}
-<p>Your Username and password didn't match.Please try Again</p>
-{% endif %}
-<form method="post" action="{% url 'Notes:login' %}">
-{% csrf_token%}
-<p><label for="id_username">Username:</label>{{ form.username }}</p>	
-<p><label for="id_password">Password:</label>{{ form.password }}</p>
-<input type="hidden" name="next" value="/notes">
-<input type="submit" value="login" />
-</form>
-</body>
-</html>
+ {% extends 'Notes/base.html' %}
+ {% block title %} Login {% endblock %}
+ {% block body%}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12 col-md-7">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<h3>Login Page</h3>
+					<form class="form-horizental" action="{% url 'Notes:login' %}" method="post" enctype="multipart/form-data">
+						{% csrf_token%}
+						{% include 'Notes/form-template.html'%}
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="sumbit" class="btn btn-success">Login</button>
+							</div>
+						</div>
+						<input type="hidden" name="next" value="/notes">	
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

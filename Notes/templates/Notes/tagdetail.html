@@ -1,0 +1,10 @@
+{% extends 'Notes/base.html' %}
+{% block body %}
+<h2>Here all your Tag Details:</h2>
+{% for notetag in all_notetags%}
+<h4>{{ notetag.note }}</h4>
+{% endfor %}
+{% for lisdotag in all_listdotags%}
+<h4>{{ lisdotag.listdo }}</h4>
+{% endfor %}
+{% endblock %}
