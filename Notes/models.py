@@ -1,31 +1,40 @@
 from django.db import models
 from django.contrib.auth.models import User
+from .current_user import get_current_user
+from django.core.urlresolvers import reverse
 
 # Create your models here.
 class Note(models.Model):
 	note_title = models.CharField(max_length=100)
-	user = models.ForeignKey(User)
+	user = models.ForeignKey(User,on_delete=models.CASCADE,default=get_current_user)
 	note_content = models.TextField()
 	note_remainder = models.DateTimeField()
 
 	def __str__(self):
 		return(self.note_title+'-'+self.note_content)
 
-class DoList(models.Model):
-	doList_title = models.CharField(max_length=100)
-	doList_content = models.TextField()
-	user = models.ForeignKey(User)
-	doList_remainder = models.DateTimeField()
-	Is_doList_checked =models.BooleanField(default=False)
+	def get_absolute_url(self):
+		return reverse('Notes:index')		
+
+class ListDo(models.Model):
+	listdo_title = models.CharField(max_length=100)
+	user = models.ForeignKey(User,on_delete=models.CASCADE,default=get_current_user)
+	listdo_remainder = models.DateTimeField()
 
 	def __str__(self):
-		return(self.doList_title+'-'+self.doList_content)
+		return(self.listdo_title)
 
-class Tag(models.Model):
-	tag_title=models.CharField(max_length=100,unique=True)
-	notes=models.ManyToManyField(Note)
-	dolists=models.ManyToManyField(DoList)
+	def get_absolute_url(self):
+		return reverse('Notes:index')	
+
+class ListContent(models.Model):
+	listdo=models.ForeignKey(ListDo,on_delete=models.CASCADE)
+	content = models.CharField(max_length=1000)
+	is_checked =models.BooleanField(default=False)
 
 	def __str__(self):
-		return(self.tag_title)
-				
+		return(self.content)		
+
+		
+
+	

@@ -1,0 +1,8 @@
+{% extends 'Notes/base.html' %}
+{% block body %}
+<h2>Here all your Tag :</h2>
+<h3>Tag:</h3>
+{% for tag in all_user_tags%}
+<h4>{{ tag }}</h4>
+{% endfor %}
+{% endblock %}
