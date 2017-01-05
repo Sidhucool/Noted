@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django import forms
-from .models import Note,ListDo,ListContent
+from .models import Note,ListDo,ListContent,Tag
 from django.forms.models import inlineformset_factory
 class UserForm(forms.ModelForm):
 	password =forms.CharField(widget=forms.PasswordInput)
@@ -27,4 +27,11 @@ class ListContentForm(forms.ModelForm):
 		fields =['content','is_checked']
 	
 ListContentFormSet = inlineformset_factory(ListDo, ListContent,exclude=['listdo',],)
+
+class TagForm(forms.Form):
+	tag = forms.CharField(
+	label='Tag title',
+	required=True,
+	widget=forms.TextInput(attrs={'size': 32})
+	)
 
