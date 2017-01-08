@@ -207,7 +207,7 @@ class TagCreate(CreateView):
 			user.tag_set.add(tag)
 			user.save()
 			#tag1.save()
-			return redirect('Notes:tagview')
+			return redirect('Notes:tag-view')
 
 		return render(request,self.template_name,{'form':form})	
 
