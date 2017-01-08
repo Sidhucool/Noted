@@ -176,6 +176,14 @@ class TagView(ListView):
 		p_user=get_current_user()
 		return Tag.objects.filter(users=p_user)
 
+class TagUpdate(UpdateView):
+	model = Tag
+	fields = ['tag_title'] 
+
+class TagDelete(DeleteView):
+	model = Tag
+	success_url = reverse_lazy('Notes:tag-view')			
+
 class TagCreate(CreateView):
 	form_class = TagForm
 	template_name ='Notes/tag_form.html'		
