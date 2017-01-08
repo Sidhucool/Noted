@@ -4,7 +4,7 @@ from django.contrib.auth import logout,authenticate,login
 from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View,TemplateView,ListView
-from .models import Note,ListDo,ListContent
+from .models import Note,ListDo,ListContent,Tag
 from django.core.urlresolvers import reverse_lazy
 from .forms import *
 from django.forms.models import inlineformset_factory
@@ -169,7 +169,47 @@ class ListDoDelete(DeleteView):
  	model = ListDo
  	success_url = reverse_lazy('Notes:index')
 
+class TagView(ListView):
+	template_name = 'Notes/tagview.html' 
+	context_object_name = 'all_user_tags'
+	def get_queryset(self):
+		p_user=get_current_user()
+		return Tag.objects.filter(users=p_user)
 
+class TagUpdate(UpdateView):
+	model = Tag
+	fields = ['tag_title'] 
+
+class TagDelete(DeleteView):
+	model = Tag
+	success_url = reverse_lazy('Notes:tag-view')			
+
+class TagCreate(CreateView):
+	form_class = TagForm
+	template_name ='Notes/tag_form.html'		
+	#display blank form
+	def get(self,request):
+		form = self.form_class(None)
+		return render(request,self.template_name,{'form':form})
+
+	#process form Data	
+	def post (self,request):
+		form = self.form_class(request.POST)
+		if form.is_valid():
+			#cleaned(Normalized) data
+			title = form.cleaned_data['tag']
+			#tag.save()
+			#all_tag= Tag.objects.filter(tag_title=tag.tag_title)
+			tag, dummy = Tag.objects.get_or_create(tag_title=title)
+			user=get_current_user()
+			#for tag in all_tag:
+			#usertag, created = UserTag.objects.get_or_create(tag.tag_title=tag)
+			user.tag_set.add(tag)
+			user.save()
+			#tag1.save()
+			return redirect('Notes:tagview')
+
+		return render(request,self.template_name,{'form':form})	
 
 		
 
