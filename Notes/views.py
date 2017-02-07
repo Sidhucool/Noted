@@ -266,6 +266,17 @@ def ListDoTagCreate(request, pk):
     else:
     	form = ListDoTagForm(listdo_id=pk)
     return render(request, 'Notes/listdotag_form.html', {'form': form}) 
-		
 
+def NoteSearch(request):
+	#srch-term
+	if request.method == "POST":
+		srchterm = request.POST['srch-term']
+	else :
+		srchterm = ''
+
+	notes = Note.objects.filter(note_title__contains=srchterm,user=request.user)
+	listdos=ListDo.objects.filter(listdo_title__contains=srchterm,user=request.user)
+
+	context = {'all_notes':notes,'all_listdos':listdos}	
+	return render (request,'Notes/search_result.html',context)
 

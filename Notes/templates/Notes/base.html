@@ -38,7 +38,8 @@
 				</li>
 			</ul>
 			<!-- search-->
-			  <form class="navbar-form navbar-left" role="search" method="get" action="#">
+			  <form class="navbar-form navbar-left" role="search" method="post" action="{% url 'Notes:search-titles' %}">
+			  {% csrf_token %}
 			    <div class="input-group add-on">
 			      <input class="form-control" placeholder="search" name="srch-term" id="srch-term" type="text">
 			      <div class="input-group-btn">

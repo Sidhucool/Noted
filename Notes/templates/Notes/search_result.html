@@ -1,0 +1,15 @@
+{% extends 'Notes/base.html' %}
+{% block body %}
+<h2>Here all your Notes and Dolists :</h2>
+<h3>Note:</h3>
+{% for note in all_notes%}
+<h4>{{ note }}</h4>
+{% endfor %}
+<h3>Dolist:</h3>
+{% for list in all_listdos %}
+<h4>{{ list }}</h4>
+{% for content in list.listcontent_set.all %}
+<h5>{{ content }}</h5>
+{% endfor %}
+{% endfor %}
+{% endblock %}
