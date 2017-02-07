@@ -6,7 +6,7 @@
 {% for note in all_notes%}
 <h4>{{ note }}</h4>
 {%for notetag in note.notetag_set.all%}
-<h6>{{ notetag.usertag }}</h6>
+<h6>{{ notetag.tag }}</h6>
 {% endfor %}
 {% endfor %}
 <h3>Dolist:</h3>
@@ -16,7 +16,7 @@
 <h5>{{ content }}</h5>
 {% endfor %}
 {%for listdotag in list.listdotag_set.all%}
-<h6>{{ listdotag.usertag }}</h6>
+<h6>{{ listdotag.tag }}</h6>
 {% endfor %}
 {% endfor %}
 {% endblock %}

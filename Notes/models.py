@@ -41,7 +41,18 @@ class Tag(models.Model):
 	def __str__(self):
 		return(self.tag_title)
 	def get_absolute_url(self):
-		return reverse('Notes:tagview')	
-		
+		return reverse('Notes:tag-view')	
+
+class NoteTag(models.Model):
+	tag = models.ForeignKey(Tag,on_delete=models.CASCADE)
+	note = models.ForeignKey(Note,on_delete=models.CASCADE)
+	def __str__(self):
+		return(self.tag.tag_title) 
+
+class ListDoTag(models.Model):
+	tag = models.ForeignKey(Tag,on_delete=models.CASCADE)
+	listdo = models.ForeignKey(ListDo,on_delete=models.CASCADE)
+	def __str__(self):
+		return(self.tag.tag_title)
 
 	

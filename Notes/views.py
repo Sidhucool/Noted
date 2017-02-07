@@ -4,7 +4,7 @@ from django.contrib.auth import logout,authenticate,login
 from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View,TemplateView,ListView
-from .models import Note,ListDo,ListContent,Tag
+from .models import Note,ListDo,ListContent,Tag,NoteTag
 from django.core.urlresolvers import reverse_lazy
 from .forms import *
 from django.forms.models import inlineformset_factory
@@ -209,14 +209,63 @@ class TagCreate(CreateView):
 			#tag1.save()
 			return redirect('Notes:tag-view')
 
-		return render(request,self.template_name,{'form':form})	
+		return render(request,self.template_name,{'form':form})
 
-		
+class NoteTagDelete(DeleteView):
+	model = NoteTag
+	success_url = reverse_lazy('Notes:index')		
 
 
+def NoteTagCreate(request, pk):
+    if request.method == "POST":
+    	form = NoteTagForm(request.POST,note_id=pk)
+    	if form.is_valid():
+            title = form.cleaned_data['tag']
+            if not Tag.objects.filter(tag_title=title,users=get_current_user()):
+            	tag, dummy = Tag.objects.get_or_create(tag_title=title)
+            	user=get_current_user()
+            	user.tag_set.add(tag)
+            	user.save()
+            tag, dummy = Tag.objects.get_or_create(tag_title=title)
+            note = Note.objects.get(id=pk)
+            notetag=NoteTag()
+            notetag.tag=tag
+            notetag.note=note
+            notetag.save()
+            #notetag.notes.add(note)
+            # Do something. Should generally end with a redirect. For example:
+            return redirect('Notes:index')
+    else:
+    	form = NoteTagForm(request.GET,note_id=pk)
+    return render(request, 'Notes/notetag_form.html', {'form': form}) 
 
 
+class ListDoTagDelete(DeleteView):
+	model = ListDoTag
+	success_url = reverse_lazy('Notes:index')
 
+def ListDoTagCreate(request, pk):
+    if request.method == "POST":
+    	form = ListDoTagForm(request.POST,listdo_id=pk)
+    	if form.is_valid():
+            title = form.cleaned_data['tag']
+            if not Tag.objects.filter(tag_title=title,users=get_current_user()):
+            	tag, dummy = Tag.objects.get_or_create(tag_title=title)
+            	user=get_current_user()
+            	user.tag_set.add(tag)
+            	user.save()
+            tag, dummy = Tag.objects.get_or_create(tag_title=title)
+            listdo = ListDo.objects.get(id=pk)
+            listdotag=ListDoTag()
+            listdotag.tag=tag
+            listdotag.listdo=listdo
+            listdotag.save()
+            #notetag.notes.add(note)
+            # Do something. Should generally end with a redirect. For example:
+            return redirect('Notes:index')
+    else:
+    	form = ListDoTagForm(listdo_id=pk)
+    return render(request, 'Notes/listdotag_form.html', {'form': form}) 
 		
 
 
